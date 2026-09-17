@@ -34,4 +34,4 @@ A Quarto website showcasing how the [biplotEZ](https://muvisu.github.io/biplotEZ
 quarto render
 ```
 
-The site is written to `_site/`. Rendered R output is cached in `_freeze/`, so posts only re-execute when their source changes.
+The site is written to `docs/`, which GitHub Pages serves from the main branch. Commit and push `docs/` after rendering to publish changes. Rendered R output is cached in `_freeze/`, so posts only re-execute when their source changes.
