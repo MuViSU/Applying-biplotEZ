@@ -16,11 +16,11 @@ website:
     logo-alt: "biplotEZ logo"
     title: false
     left:
-      - text: "About"
+      - text: "ABOUT"
         href: about.qmd
-      - text: "Applications"
+      - text: "APPLICATIONS"
         href: applications.qmd
-      - text: "Who we are"
+      - text: "WHO WE ARE"
         href: who-we-are.qmd
     right:
       - icon: github
