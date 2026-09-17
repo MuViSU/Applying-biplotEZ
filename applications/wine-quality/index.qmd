@@ -1,7 +1,7 @@
 ---
 title: "What makes a red wine score well?"
 description: "A PCA biplot of 1 599 Portuguese red wines shows which chemical properties travel together and which ones separate the high-scoring wines from the rest."
-author: "Raeesa"
+author: "Raeesa and Claude"
 date: 2026-09-16
 categories: [PCA, food and drink]
 ---
