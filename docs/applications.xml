@@ -9,7 +9,7 @@
 <link>https://muvisu.github.io/Applying-biplotEZ/applications.html</link>
 <atom:link href="https://muvisu.github.io/Applying-biplotEZ/applications.xml" rel="self" type="application/rss+xml"/>
 <description>Showcasing how the biplotEZ R package is applied to interesting data sets.</description>
-<generator>quarto-1.8.24</generator>
+<generator>quarto-1.9.36</generator>
 <lastBuildDate>Tue, 15 Sep 2026 22:00:00 GMT</lastBuildDate>
 <item>
   <title>What makes a red wine score well?</title>
