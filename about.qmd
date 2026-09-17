@@ -9,7 +9,7 @@ toc: false
 
 Documentation and vignettes for the package already exist. What was missing was a place that shows the *why*: what does a biplot actually tell you about a data set, and what kinds of questions can it answer? On the [Applications](applications.qmd) page we take data sets from a range of fields, apply biplotEZ to them, and walk through what the picture reveals. Each application is short, self-contained and comes with the R code used to produce it.
 
-This project is run within MuViSU and is funded by the [National Institute for Theoretical and Computational Sciences (NiTheCS)](https://nithecs.ac.za/).
+This project is run within MuViSU and is funded by the [National Institute for Theoretical and Computational Sciences (NITheCS)](https://nithecs.ac.za/).
 
 ## What is a biplot?
 
