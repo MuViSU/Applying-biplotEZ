@@ -1,0 +1,154 @@
+/* Pill-style tag badges */
+.badge-row span {
+  display: inline-block;
+  background: #eef3fb;
+  color: #2A6FD6;
+  border-radius: 999px;
+  padding: 0.15rem 0.7rem;
+  margin: 0 0.3rem 0.3rem 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Team cards on the Who we are page */
+.team {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+.team-card {
+  border: 1px solid #e3e8f0;
+  border-top: 4px solid #2A6FD6;
+  border-radius: 8px;
+  padding: 1.25rem;
+  background: #ffffff;
+}
+.team-card:nth-child(2) { border-top-color: #3FAF3A; }
+.team-card:nth-child(3) { border-top-color: #F3C12B; }
+.team-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+}
+.team-card .role {
+  color: #55617a;
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Funder / affiliation logos row */
+.partners {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+/* Listing cards */
+.quarto-listing .card {
+  border-radius: 8px;
+  transition: box-shadow 0.15s ease-in-out;
+}
+.quarto-listing .card:hover {
+  box-shadow: 0 4px 14px rgba(42, 111, 214, 0.15);
+}
+
+/* Landing page */
+.landing {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+.wordmark {
+  font-family: "Poppins", "Montserrat", "Segoe UI", Helvetica, Arial, sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.6rem, 8vw, 6rem);
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  color: #101a3c;
+  margin: 0 0 1.25rem 0;
+  border: none;
+}
+.wordmark .bp {
+  color: #101a3c;
+}
+.wordmark .ez {
+  background: linear-gradient(90deg, #2358e8 0%, #1fc3ef 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.tagline {
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+  color: #55617a;
+  margin: 0 0 2.25rem 0;
+}
+.learn-more {
+  font-weight: 600;
+  padding: 0.75rem 2.25rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2358e8, #1fc3ef);
+  border: none;
+  box-shadow: 0 4px 14px rgba(35, 88, 232, 0.25);
+}
+.learn-more:hover {
+  filter: brightness(1.07);
+  box-shadow: 0 6px 18px rgba(35, 88, 232, 0.35);
+}
+
+/* Floating points and vectors behind the landing wordmark */
+.landing {
+  position: relative;
+  overflow: hidden;
+}
+.landing-content {
+  position: relative;
+  z-index: 1;
+}
+.floaters {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+}
+.floaters .fl {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: drift var(--dur, 14s) ease-in-out var(--delay, 0s) infinite alternate;
+}
+@keyframes drift {
+  from { transform: translate(0, 0) rotate(0deg); }
+  to   { transform: translate(var(--dx, 20px), var(--dy, -25px)) rotate(var(--rot, 0deg)); }
+}
+/* Each element gets its own drift so the motion never lines up */
+.floaters .v1  { --dur: 18s; --dx: 25px;  --dy: -20px; --rot: 4deg;  }
+.floaters .v2  { --dur: 21s; --dx: -30px; --dy: 15px;  --rot: -5deg; --delay: -6s; }
+.floaters .v3  { --dur: 17s; --dx: -20px; --dy: -25px; --rot: 3deg;  --delay: -3s; }
+.floaters .v4  { --dur: 23s; --dx: 20px;  --dy: 25px;  --rot: -3deg; --delay: -9s; }
+.floaters .p1  { --dur: 13s; --dx: 30px;  --dy: 20px;  }
+.floaters .p2  { --dur: 15s; --dx: -25px; --dy: -30px; --rot: 20deg; --delay: -4s; }
+.floaters .p3  { --dur: 16s; --dx: 20px;  --dy: -35px; --rot: 15deg; --delay: -8s; }
+.floaters .p4  { --dur: 12s; --dx: -30px; --dy: -20px; --delay: -2s; }
+.floaters .p5  { --dur: 14s; --dx: -35px; --dy: 25px;  --delay: -5s; }
+.floaters .p6  { --dur: 17s; --dx: 25px;  --dy: -25px; --delay: -1s; }
+.floaters .p7  { --dur: 15s; --dx: -25px; --dy: 30px;  --rot: -20deg; --delay: -7s; }
+.floaters .p8  { --dur: 13s; --dx: 30px;  --dy: 30px;  --delay: -3s; }
+.floaters .p9  { --dur: 16s; --dx: -30px; --dy: -30px; --delay: -10s; }
+.floaters .p10 { --dur: 14s; --dx: -20px; --dy: 35px;  --delay: -6s; }
+.floaters .p11 { --dur: 12s; --dx: 35px;  --dy: -20px; --rot: 10deg; --delay: -4s; }
+.floaters .p12 { --dur: 18s; --dx: 30px;  --dy: -30px; --delay: -2s; }
+@media (prefers-reduced-motion: reduce) {
+  .floaters .fl { animation: none; }
+}
+@media (max-width: 600px) {
+  .floaters { opacity: 0.35; }
+}

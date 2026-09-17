@@ -1,0 +1,59 @@
+/*-- scss:defaults --*/
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap");
+
+// Colours taken from the biplotEZ logo
+$ez-blue:   #2A6FD6;
+$ez-green:  #3FAF3A;
+$ez-yellow: #F3C12B;
+$ez-orange: #E8891C;
+$ez-ink:    #1F2A3A;
+
+$primary:   $ez-blue;
+$secondary: $ez-green;
+$body-color: $ez-ink;
+$link-color: $ez-blue;
+$link-hover-color: darken($ez-blue, 12%);
+
+$font-family-sans-serif: "Source Sans 3", "Segoe UI", Helvetica, Arial, sans-serif;
+$headings-font-weight: 700;
+
+$navbar-bg: #ffffff;
+$navbar-fg: $ez-ink;
+$navbar-hl: $ez-blue;
+
+$footer-bg: #f6f8fb;
+$footer-fg: #55617a;
+
+$code-block-bg: #f6f8fb;
+$code-color: darken($ez-blue, 10%);
+
+/*-- scss:rules --*/
+
+// Coloured gradient stripe under the navbar, echoing the logo's hexagon border
+.navbar {
+  border-bottom: 4px solid;
+  border-image: linear-gradient(90deg, $ez-blue, $ez-green, $ez-yellow, $ez-orange) 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.navbar-brand img {
+  max-height: 44px;
+}
+
+h1, h2, h3 {
+  color: $ez-ink;
+}
+
+h2 {
+  border-bottom: 2px solid lighten($ez-blue, 40%);
+  padding-bottom: 0.25rem;
+}
+
+// Callout accent colours
+.callout-note {
+  border-left-color: $ez-blue;
+}
+.callout-tip {
+  border-left-color: $ez-green;
+}

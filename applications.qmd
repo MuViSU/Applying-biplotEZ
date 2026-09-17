@@ -1,0 +1,18 @@
+---
+title: "Applications"
+subtitle: "biplotEZ applied to interesting data sets"
+toc: false
+listing:
+  contents: applications
+  type: grid
+  sort: "date desc"
+  fields: [image, title, description, date, categories]
+  categories: true
+  sort-ui: false
+  filter-ui: false
+  feed: true
+  image-placeholder: images/logo.png
+page-layout: full
+---
+
+Each post below takes a data set, asks a question of it, and answers it with a biplot. Posts are written for readers without a statistics background. The R code is included but folded away, so you can read the story first and look at the code later.

@@ -1,0 +1,21 @@
+---
+title: "About"
+toc: false
+---
+
+## What this page is for
+
+[biplotEZ](https://muvisu.github.io/biplotEZ/) is an R package that makes it easy to build biplots. It is developed by the [MuViSU](who-we-are.qmd) research group at Stellenbosch University.
+
+Documentation and vignettes for the package already exist. What was missing was a place that shows the *why*: what does a biplot actually tell you about a data set, and what kinds of questions can it answer? On the [Applications](applications.qmd) page we take data sets from a range of fields, apply biplotEZ to them, and walk through what the picture reveals. Each application is short, self-contained and comes with the R code used to produce it.
+
+This project is run within MuViSU and is funded by the [National Institute for Theoretical and Computational Sciences (NiTheCS)](https://nithecs.ac.za/).
+
+## What is a biplot?
+
+A biplot is a scatter plot for data with many variables at once. Each observation (a person, a country, a wine, a species) becomes a point, and each variable becomes an axis drawn through the plot. Observations that sit close together are similar across all the variables; reading a point against an axis tells you, approximately, its value for that variable. In a single picture you can see which observations cluster, which stand out, and which variables drive the differences. The "bi" in biplot refers to this joint display of both observations and variables.
+
+::: {.callout-tip}
+## Want to try it yourself?
+Install the package in R with `install.packages("biplotEZ")`. Every application on this site includes the code that produced it, so you can reproduce and adapt the plots.
+:::

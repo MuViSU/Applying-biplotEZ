@@ -1,0 +1,43 @@
+---
+title: "Post title"
+description: "One or two sentences that appear on the Applications listing card."
+author: "Your name"
+date: 2026-09-16
+categories: [PCA, biplot]
+draft: true
+---
+
+## The data
+
+Introduce the data set. Where does it come from, what does one row represent, and which variables are we looking at?
+
+## The question
+
+State in plain language what we want to find out.
+
+## The biplot
+
+```{r}
+#| label: setup
+library(biplotEZ)
+```
+
+```{r}
+#| label: biplot
+#| fig-cap: "Caption explaining what the reader is looking at."
+# biplot(data) |> PCA() |> plot()
+```
+
+## What the picture tells us
+
+Walk the reader through the plot. Which observations cluster? Which variables pull them apart? What is surprising?
+
+## Take-aways
+
+- One-line summary of the first finding.
+- One-line summary of the second finding.
+
+::: {.callout-note collapse="true"}
+## Reproduce this post
+The full source of this page lives in the site repository. Install biplotEZ with `install.packages("biplotEZ")` and run the code chunks above.
+:::

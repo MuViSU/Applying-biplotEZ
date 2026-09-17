@@ -1,0 +1,7 @@
+# Settings shared by every post in the applications folder
+format:
+  html:
+    toc: true
+    code-fold: true
+    code-summary: "Show the R code"
+title-block-banner: false

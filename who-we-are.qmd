@@ -1,0 +1,49 @@
+---
+title: "Who we are"
+toc: false
+---
+
+## MuViSU
+
+**MuViSU**, the [Centre for Multidimensional Visualisation at Stellenbosch University](https://www.su.ac.za/en/faculties/economy/muvisu/muvisu-multi-dimensional-data-visualisation-economics-and-management-sciences-stellenbosch) research group, is based in the Department of Statistics and Actuarial Science at Stellenbosch University. The group develops methods and software for visualising multivariate data, with biplots as a central theme, and is the home of the [biplotEZ](https://muvisu.github.io/biplotEZ/) R package.
+
+The *Applying biplotEZ* project is run within MuViSU and is funded by the [National Institute for Theoretical and Computational Sciences (NiTheCS)](https://nithecs.ac.za/).
+
+## The team
+
+::: {.team}
+::: {.team-card}
+### Prof Sugnet Lubbe
+::: {.role}
+Stellenbosch University
+:::
+:::
+
+
+
+::: {.team-card}
+### Dr Raeesa Ganey
+::: {.role}
+University of the Witwatersrand
+:::
+:::
+
+::: {.team-card}
+### Dr Johané Nienkemper-Swanepoel
+::: {.role}
+Stellenbosch University
+:::
+:::
+
+:::
+
+
+## Get in touch
+
+Have a data set you think would make an interesting biplot? Found a mistake, or want to contribute an application? Open an issue on the [biplotEZ GitHub repository](https://github.com/MuViSU/biplotEZ) or contact any member of the team.
+
+## Links
+
+- [biplotEZ documentation](https://muvisu.github.io/biplotEZ/)
+- [biplotEZ on CRAN](https://cran.r-project.org/package=biplotEZ)
+- [NiTheCS](https://nithecs.ac.za/)

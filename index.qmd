@@ -1,0 +1,57 @@
+---
+title: ""
+pagetitle: "Applying biplotEZ"
+page-layout: custom
+toc: false
+---
+
+::: {.landing}
+
+```{=html}
+<svg class="floaters" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2358e8"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3faf3a"/>
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#e8891c"/>
+    </marker>
+    <marker id="arrow-navy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#101a3c"/>
+    </marker>
+  </defs>
+
+  <!-- vectors -->
+  <g class="fl v1"><line x1="150" y1="560" x2="330" y2="470" stroke="#2358e8" stroke-width="2" marker-end="url(#arrow-blue)"/></g>
+  <g class="fl v2"><line x1="1040" y1="140" x2="900" y2="250" stroke="#3faf3a" stroke-width="2" marker-end="url(#arrow-green)"/></g>
+  <g class="fl v3"><line x1="960" y1="600" x2="1090" y2="500" stroke="#e8891c" stroke-width="2" marker-end="url(#arrow-orange)"/></g>
+  <g class="fl v4"><line x1="200" y1="120" x2="330" y2="180" stroke="#101a3c" stroke-width="2" marker-end="url(#arrow-navy)"/></g>
+
+  <!-- points: pch 16 circle, 17 triangle, 15 square, 18 diamond, 3 plus, 1 open circle -->
+  <g class="fl p1"><circle cx="120" cy="200" r="9" fill="#2358e8"/></g>
+  <g class="fl p2"><polygon points="260,300 271,320 249,320" fill="#3faf3a"/></g>
+  <g class="fl p3"><rect x="80" y="420" width="16" height="16" fill="#f3c12b"/></g>
+  <g class="fl p4"><rect x="380" y="590" width="14" height="14" fill="#e8891c" transform="rotate(45 387 597)"/></g>
+  <g class="fl p5"><circle cx="1110" cy="330" r="8" fill="none" stroke="#2358e8" stroke-width="2.5"/></g>
+  <g class="fl p6"><path d="M 830 620 h 18 M 839 611 v 18" stroke="#3faf3a" stroke-width="2.5"/></g>
+  <g class="fl p7"><polygon points="1000,90 1012,112 988,112" fill="#e8891c"/></g>
+  <g class="fl p8"><circle cx="720" cy="80" r="7" fill="#1fc3ef"/></g>
+  <g class="fl p9"><rect x="1140" y="600" width="15" height="15" fill="#2358e8" transform="rotate(45 1147 607)"/></g>
+  <g class="fl p10"><circle cx="500" cy="110" r="8" fill="#3faf3a"/></g>
+  <g class="fl p11"><rect x="560" y="640" width="14" height="14" fill="#f3c12b"/></g>
+  <g class="fl p12"><circle cx="40" cy="640" r="8" fill="none" stroke="#e8891c" stroke-width="2.5"/></g>
+</svg>
+```
+
+<div class="landing-content">
+<h1 class="wordmark">Applying <span class="bp">biplot</span><span class="ez">EZ</span></h1>
+
+<p class="tagline">Real data. Real questions. Biplots made easy.</p>
+
+<a class="btn btn-primary btn-lg learn-more" href="about.html">Learn more</a>
+</div>
+
+:::

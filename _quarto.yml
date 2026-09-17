@@ -1,0 +1,52 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - "*.qmd"
+    - "!README.md"
+
+website:
+  title: "Applying biplotEZ"
+  description: "Showcasing how the biplotEZ R package is applied to interesting data sets."
+  favicon: images/logo.png
+  site-url: https://muvisu.github.io/Applying-biplotEZ
+  page-navigation: true
+  navbar:
+    logo: images/logo.png
+    logo-alt: "biplotEZ logo"
+    title: false
+    left:
+      - text: "About"
+        href: about.qmd
+      - text: "Applications"
+        href: applications.qmd
+      - text: "Who we are"
+        href: who-we-are.qmd
+    right:
+      - icon: github
+        href: https://github.com/MuViSU/biplotEZ
+        aria-label: "biplotEZ on GitHub"
+  page-footer:
+    left: "MuViSU · Multidimensional Visualisation Stellenbosch University"
+    center: "Funded by NiTheCS"
+    right: "Built with [Quarto](https://quarto.org) and [biplotEZ](https://muvisu.github.io/biplotEZ/)"
+
+format:
+  html:
+    theme:
+      light: [cosmo, theme.scss]
+    css: styles.css
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    code-tools: false
+    code-summary: "Show the R code"
+    fig-width: 7
+    fig-height: 6
+    fig-align: center
+    link-external-newwindow: true
+
+execute:
+  freeze: auto
+  warning: false
+  message: false
