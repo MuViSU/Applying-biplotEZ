@@ -2,6 +2,7 @@
   {
     "listing": "/applications.html",
     "items": [
+      "/applications/walmart-sales/index.html",
       "/applications/wine-quality/index.html"
     ]
   }
