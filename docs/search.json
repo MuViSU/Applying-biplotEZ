@@ -4,14 +4,14 @@
     "href": "who-we-are.html",
     "title": "Who we are",
     "section": "",
-    "text": "MuViSU, the Centre for Multidimensional Visualisation at Stellenbosch University research group, is based in the Department of Statistics and Actuarial Science at Stellenbosch University. The group develops methods and software for visualising multivariate data, with biplots as a central theme, and is the home of the biplotEZ R package.\nThe Applying biplotEZ project is run within MuViSU and is funded by the National Institute for Theoretical and Computational Sciences (NiTheCS)."
+    "text": "MuViSU, the Centre for Multi-Dimensional Data Visualisation at Stellenbosch University research group, is based in the Department of Statistics and Actuarial Science at Stellenbosch University. The group develops methods and software for visualising multivariate data, with biplots as a central theme and is the home of the biplotEZ R package.\nThe Applying biplotEZ project is run within MuViSU and is funded by the National Institute for Theoretical and Computational Sciences (NITheCS)."
   },
   {
     "objectID": "who-we-are.html#muvisu",
     "href": "who-we-are.html#muvisu",
     "title": "Who we are",
     "section": "",
-    "text": "MuViSU, the Centre for Multidimensional Visualisation at Stellenbosch University research group, is based in the Department of Statistics and Actuarial Science at Stellenbosch University. The group develops methods and software for visualising multivariate data, with biplots as a central theme, and is the home of the biplotEZ R package.\nThe Applying biplotEZ project is run within MuViSU and is funded by the National Institute for Theoretical and Computational Sciences (NiTheCS)."
+    "text": "MuViSU, the Centre for Multi-Dimensional Data Visualisation at Stellenbosch University research group, is based in the Department of Statistics and Actuarial Science at Stellenbosch University. The group develops methods and software for visualising multivariate data, with biplots as a central theme and is the home of the biplotEZ R package.\nThe Applying biplotEZ project is run within MuViSU and is funded by the National Institute for Theoretical and Computational Sciences (NITheCS)."
   },
   {
     "objectID": "who-we-are.html#the-team",
@@ -32,7 +32,7 @@
     "href": "who-we-are.html#links",
     "title": "Who we are",
     "section": "Links",
-    "text": "Links\n\nbiplotEZ documentation\nbiplotEZ on CRAN\nNiTheCS"
+    "text": "Links\n\nbiplotEZ documentation\nbiplotEZ on CRAN\nNITheCS"
   },
   {
     "objectID": "applications/wine-quality/index.html",
@@ -88,14 +88,14 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "biplotEZ is an R package that makes it easy to build biplots. It is developed by the MuViSU research group at Stellenbosch University.\nDocumentation and vignettes for the package already exist. What was missing was a place that shows the why: what does a biplot actually tell you about a data set, and what kinds of questions can it answer? On the Applications page we take data sets from a range of fields, apply biplotEZ to them, and walk through what the picture reveals. Each application is short, self-contained and comes with the R code used to produce it.\nThis project is run within MuViSU and is funded by the National Institute for Theoretical and Computational Sciences (NiTheCS)."
+    "text": "biplotEZ is an R package that makes it easy to build biplots. It is developed by the MuViSU research group at Stellenbosch University.\nDocumentation and vignettes for the package already exist. What was missing was a place that shows the why: what does a biplot actually tell you about a data set, and what kinds of questions can it answer? On the Applications page we take data sets from a range of fields, apply biplotEZ to them, and walk through what the picture reveals. Each application is short, self-contained and comes with the R code used to produce it.\nThis project is run within MuViSU and is funded by the National Institute for Theoretical and Computational Sciences (NITheCS)."
   },
   {
     "objectID": "about.html#what-this-page-is-for",
     "href": "about.html#what-this-page-is-for",
     "title": "About",
     "section": "",
-    "text": "biplotEZ is an R package that makes it easy to build biplots. It is developed by the MuViSU research group at Stellenbosch University.\nDocumentation and vignettes for the package already exist. What was missing was a place that shows the why: what does a biplot actually tell you about a data set, and what kinds of questions can it answer? On the Applications page we take data sets from a range of fields, apply biplotEZ to them, and walk through what the picture reveals. Each application is short, self-contained and comes with the R code used to produce it.\nThis project is run within MuViSU and is funded by the National Institute for Theoretical and Computational Sciences (NiTheCS)."
+    "text": "biplotEZ is an R package that makes it easy to build biplots. It is developed by the MuViSU research group at Stellenbosch University.\nDocumentation and vignettes for the package already exist. What was missing was a place that shows the why: what does a biplot actually tell you about a data set, and what kinds of questions can it answer? On the Applications page we take data sets from a range of fields, apply biplotEZ to them, and walk through what the picture reveals. Each application is short, self-contained and comes with the R code used to produce it.\nThis project is run within MuViSU and is funded by the National Institute for Theoretical and Computational Sciences (NITheCS)."
   },
   {
     "objectID": "about.html#what-is-a-biplot",
