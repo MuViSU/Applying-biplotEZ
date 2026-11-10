@@ -10,7 +10,460 @@
 <atom:link href="https://muvisu.github.io/Applying-biplotEZ/applications.xml" rel="self" type="application/rss+xml"/>
 <description>Showcasing how the biplotEZ R package is applied to interesting data sets.</description>
 <generator>quarto-1.8.24</generator>
-<lastBuildDate>Tue, 22 Sep 2026 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 09 Nov 2026 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>What makes a gut microbiome sample unusual?</title>
+  <dc:creator>Raeesa </dc:creator>
+  <link>https://muvisu.github.io/Applying-biplotEZ/applications/CDM/</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="the-data" class="level2">
+<h2 class="anchored" data-anchor-id="the-data">The data</h2>
+<p>In a study of the gut microbiome and colorectal cancer, Nakatsu et al.&nbsp;(2015) collected bacterial counts from tissue samples. The data considered here contain counts for six bacterial groups: Firmicutes, Proteobacteria, Bacteroidetes, Fusobacteria, Actinobacteria, and a sixth category combining all remaining bacteria.</p>
+<p>Two subsets of the data are looked at: 61 samples from healthy individuals and 52 samples taken from tissue adjacent to tumours in patients with colorectal cancer.</p>
+<p>Van Heerden et al.&nbsp;(2026) recently proposed a statistical model for identifying unusual observations in microbiome count data. Their approach distinguishes between typical samples and samples that exhibit considerably more variation. When applied to these data, the model identifies 11 unusual samples in the healthy group and 7 in the cancer group.</p>
+<p>This gives a useful starting point, but it also raises an interesting question.</p>
+</section>
+<section id="what-makes-these-samples-unusual" class="level2">
+<h2 class="anchored" data-anchor-id="what-makes-these-samples-unusual">What makes these samples unusual?</h2>
+<p>The model identifies observations that differ from the rest, but it is less obvious what makes them different. Are certain bacterial groups responsible? Do the unusual samples share similar characteristics, or are they unusual for different reasons?</p>
+<p>This is where a PCA biplot can be useful. Rather than simply identifying unusual samples, we can explore their positions relative to the other observations and see how these relate to the bacterial groups.</p>
+</section>
+<section id="constructing-the-biplots" class="level2">
+<h2 class="anchored" data-anchor-id="constructing-the-biplots">Constructing the biplots</h2>
+<p>Before applying PCA, we need to account for the nature of the data. Bacterial counts depend on the total number of reads in a sample, so comparing raw counts can be misleading. It is of more interest to use the relative abundance of the bacterial groups.</p>
+<p>To do this, a centred log-ratio (CLR) transformation is applied, adding a pseudo-count of 0.5 beforehand to accommodate zero counts.</p>
+<p>There is also a small but important decision in how the biplots are constructed.</p>
+<p>Rather than fitting PCA to all the samples, we use only those classified as typical by the model. The unusual samples are then projected onto the resulting biplot. This means that the unusual observations do not influence the principal components, allowing to see where they fall relative to the structure of the typical samples.</p>
+<p>Finally, a ring around each point is drawn. The model gives each sample a probability of being typical, and it classifies a sample as unusual when this probability is 0.5 or less. The ring shows how near that probability is to 0.5: the nearer it is, the larger the ring. A large ring therefore marks a sample that the model is not sure about, while a point with no visible ring is one where the model is confident.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the R code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(CDM)        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># the model and the data</span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(biplotEZ)   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># development version, draws with ggplot2</span></span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span>
+<span id="cb1-4"></span>
+<span id="cb1-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Centred log-ratio. The pseudo-count removes zeros.</span></span>
+<span id="cb1-6">clr <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(Y, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pseudo =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>) {</span>
+<span id="cb1-7">  L <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">log</span>(Y <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> pseudo)</span>
+<span id="cb1-8">  L <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rowMeans</span>(L)</span>
+<span id="cb1-9">}</span>
+<span id="cb1-10"></span>
+<span id="cb1-11">cdm_biplot <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(Y, title) {</span>
+<span id="cb1-12">  Y <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.matrix</span>(Y)</span>
+<span id="cb1-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">storage.mode</span>(Y) <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"integer"</span></span>
+<span id="cb1-14"></span>
+<span id="cb1-15">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Fit the model. A sample is unusual if P(typical) is 0.5 or less.</span></span>
+<span id="cb1-16">  fit <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">CDM.fit</span>(Y)</span>
+<span id="cb1-17">  post <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> fit<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Probability.Posterior[, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]</span>
+<span id="cb1-18">  unusual <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> post <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span></span>
+<span id="cb1-19"></span>
+<span id="cb1-20">  Z <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">clr</span>(Y)</span>
+<span id="cb1-21">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rownames</span>(Z) <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq_len</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(Z))</span>
+<span id="cb1-22"></span>
+<span id="cb1-23">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Typical samples set the axes. Unusual samples are added afterwards.</span></span>
+<span id="cb1-24">  bp <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">biplot</span>(Z[<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span>unusual, , <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">drop =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Title =</span> title) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-25">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">PCA</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-26">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">samples</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"darkorange"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pch =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-27">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">axes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grey40"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-28">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">interpolate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">newdata =</span> Z[unusual, , <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">drop =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>]) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-29">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">newsamples</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"dodgerblue3"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pch =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">cex =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.3</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb1-30"></span>
+<span id="cb1-31">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Doubt: 0 = the model is sure, 1 = P(typical) is 0.5</span></span>
+<span id="cb1-32">  scores <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbind</span>(bp<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Z, bp<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Znew)</span>
+<span id="cb1-33">  ord <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">which</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span>unusual), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">which</span>(unusual))</span>
+<span id="cb1-34">  rings <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> scores[, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> scores[, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>],</span>
+<span id="cb1-35">                       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">doubt =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">abs</span>(post[ord] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>))</span>
+<span id="cb1-36"></span>
+<span id="cb1-37">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gg_biplot</span>(bp, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">draw =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>,</span>
+<span id="cb1-38">            <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlim =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">range</span>(scores[, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.2</span>,</span>
+<span id="cb1-39">            <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylim =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">range</span>(scores[, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>]) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.2</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>gg <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-40">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> rings, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> x, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> y), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">inherit.aes =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>,</span>
+<span id="cb1-41">               <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">shape =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grey30"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> rings<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>doubt)</span>
+<span id="cb1-42">}</span></code></pre></div></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the R code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Healthy_Subset"</span>)</span>
+<span id="cb2-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cdm_biplot</span>(Healthy_Subset, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Healthy samples"</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://muvisu.github.io/Applying-biplotEZ/applications/CDM/index_files/figure-html/biplot-healthy-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>PCA biplot of the 61 healthy samples. Orange circles represent typical samples, while blue squares identify the 11 unusual samples. Larger rings indicate greater uncertainty in the model’s classification.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the R code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Carcinoma_Subset"</span>)</span>
+<span id="cb3-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cdm_biplot</span>(Carcinoma_Subset, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Samples next to a tumour"</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://muvisu.github.io/Applying-biplotEZ/applications/CDM/index_files/figure-html/biplot-carcinoma-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>PCA biplot of the 52 samples taken from tissue adjacent to tumours. The 7 unusual samples are shown as blue squares.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="what-can-we-see" class="level2">
+<h2 class="anchored" data-anchor-id="what-can-we-see">What can we see?</h2>
+<p>In each biplot, the points represent tissue samples and the axes represent bacterial groups. The tick marks are on the log-ratio scale, and a sample can be projected onto an axis to get an indication of its value for that bacterial group.</p>
+<p>The first thing that stands out is the position of the unusual samples. In both biplots, most of the blue squares fall towards the edges of the orange point cloud, or beyond it.</p>
+<p>This is reassuring, since the PCA was constructed using only the typical samples. The visual separation is broadly consistent with the classifications produced by the model.</p>
+<p>The first two principal components account for approximately 82% of the variation among the typical healthy samples and 73% among the typical cancer samples. Therefore a substantial proportion of the variation can be retained in these two-dimensional displays.</p>
+<section id="healthy-samples-the-role-of-proteobacteria" class="level3">
+<h3 class="anchored" data-anchor-id="healthy-samples-the-role-of-proteobacteria">Healthy samples: the role of Proteobacteria</h3>
+<p>In the healthy samples, the unusual observations are not scattered randomly around the typical samples. Most appear on the side of the biplot associated with higher relative abundances of Proteobacteria, with three samples lying particularly far in this direction.</p>
+<p>The widest spread of the samples runs along the Fusobacteria axis. Fusobacteria is absent from 14 of the 61 healthy samples, and the difference between samples with and without this group explains more than half of that spread.</p>
+<p>Although Fusobacteria contributes strongly to the overall structure of the biplot, Proteobacteria appears to be more useful for understanding why several of the healthy samples were classified as unusual.</p>
+</section>
+<section id="cancer-samples-the-role-of-fusobacteria" class="level3">
+<h3 class="anchored" data-anchor-id="cancer-samples-the-role-of-fusobacteria">Cancer samples: the role of Fusobacteria</h3>
+<p>The picture is somewhat different for the cancer samples.</p>
+<p>Here, the unusual observations tend to lie at opposite ends of the Fusobacteria axis. Three samples have particularly high relative abundances of Fusobacteria, while two have particularly low relative abundances.</p>
+<p>What is particularly useful here is that the unusual samples are not all unusual in the same direction. Some have much higher relative abundances, while others have much lower relative abundances.</p>
+<p>The biplot makes this distinction immediately visible.</p>
+</section>
+</section>
+<section id="some-thoughts" class="level2">
+<h2 class="anchored" data-anchor-id="some-thoughts">Some thoughts</h2>
+<p>What I like about this example is how the statistical model and the biplots complement each other.</p>
+<p>The model provides a principled way of identifying unusual samples. The biplots then help us understand what distinguishes those samples from the rest.</p>
+<p>For the healthy samples, Proteobacteria appears to play an important role in separating several unusual observations. In the cancer samples, Fusobacteria is more prominent, with unusual samples occurring at both high and low relative abundances.</p>
+<p>There is also a second benefit. By showing how the unusual samples are positioned relative to the typical samples, the biplots offer a way to explore whether the model’s assumptions are reasonable.</p>
+<p>This is a good example of why I find biplots useful alongside formal statistical methods. They do not replace the model, but they can reveal patterns that are difficult to appreciate from the model output alone.</p>
+<p><strong>References</strong></p>
+<ul>
+<li>Nakatsu, G. et al.&nbsp;(2015). Gut mucosal microbiome across stages of colorectal carcinogenesis. <em>Nature Communications</em>, 6, 8727.</li>
+<li>Van Heerden, O., Bekker, A., Makgai, S., Otto, A. and Punzo, A. (2026). A contaminated model for overdispersed multinomial microbiome count data. arXiv:2606.02199.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Reproduce this analysis
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The full source code is available in the website repository.</p>
+<p>The analysis uses the development version of <strong>biplotEZ</strong> and the <strong>CDM</strong> package, which also contains the data.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">devtools<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install_github</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"MuViSU/biplotEZ"</span>)</span>
+<span id="cb4-2">devtools<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install_github</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"u20439530/CDM_Package"</span>)</span></code></pre></div></div>
+<p>Once installed, the code chunks above can be used to reproduce the biplots.</p>
+</div>
+</div>
+</div>
+
+
+</section>
+
+ ]]></description>
+  <category>PCA</category>
+  <category>compositional data</category>
+  <category>health</category>
+  <guid>https://muvisu.github.io/Applying-biplotEZ/applications/CDM/</guid>
+  <pubDate>Mon, 09 Nov 2026 22:00:00 GMT</pubDate>
+</item>
 <item>
   <title>When does Walmart sell? Weekly and yearly movements in 70 store departments</title>
   <dc:creator>Raeesa </dc:creator>
